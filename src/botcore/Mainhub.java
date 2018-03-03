@@ -16,8 +16,6 @@ package botcore;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -35,6 +33,7 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Game;
+import net.dv8tion.jda.core.utils.JDALogger;
 
 public class Mainhub {
     
@@ -46,8 +45,8 @@ public class Mainhub {
 	try {
 	    Path startPath = Paths.get(".", "start.config");
 	    if (Files.exists(startPath)) {
-	    	BufferedReader input = new BufferedReader(new FileReader("." + File.separator + "start.config"));
-	    	input.readLine();
+	    	BufferedReader input = Files.newBufferedReader(startPath);
+	    	String token = input.readLine().substring(1);
 	    	String startImmidialty = input.readLine();
 	    	String useGUI = input.readLine();
 	    	String shardCount = input.readLine();
@@ -59,7 +58,7 @@ public class Mainhub {
 	    	}
 	    	if (startImmidialty == "TRUE") {
 	    	    try {
-	    		JDABuilder builder = new JDABuilder(AccountType.BOT).setToken(/*Add token here*/);
+	    		JDABuilder builder = new JDABuilder(AccountType.BOT).setToken(token);
 	    		builder.setGame(Game.watching("Type +help")).setStatus(OnlineStatus.OFFLINE);
 	    		int count = Integer.parseInt(shardCount);
 	    		for (int i = 0; i < count; i =+ 1) {
@@ -86,7 +85,7 @@ public class Mainhub {
 	    		
 	    	    } 
 	    	    catch (NumberFormatException numEx) {
-	    		JDABuilder builder = new JDABuilder(AccountType.BOT).setToken(/*Add token here*/);
+	    		JDABuilder builder = new JDABuilder(AccountType.BOT).setToken(token);
 	    		builder.setGame(Game.watching("Type +help")).setStatus(OnlineStatus.OFFLINE);
 	    		api.add(builder.useSharding(0, 1).buildAsync());
 	    		while (api.get(0).getGuilds().size() > 1000) {
@@ -116,7 +115,11 @@ public class Mainhub {
 	    }
 	} 
 	catch (IOException IOEx) {
-	    System.err.println("Auslesen der Starts-Kofigurationsdatei fehlgeschlagen!");
+	    if (JDALogger.getLog(Mainhub.class).isErrorEnabled()) {
+		JDALogger.getLog(Mainhub.class).error("Failed reading \"start.config\". Token may be unreachable.");
+	    } else {
+		System.err.println("Failed reading \"start.config\". Token may be unreachable.");
+	    }
 	    IOEx.printStackTrace();
 	} 
 	catch (LoginException e) {
@@ -135,18 +138,21 @@ public class Mainhub {
 	return api;
     }
     public static void launch() throws LoginException {
+	String token = "";
 	try {
 	    Path startPath = Paths.get(".", "start.config");
 	    String shardCount = "";
 	    if (Files.isReadable(startPath)) {
 		BufferedReader input = Files.newBufferedReader(startPath);
-		input.readLine();
+		token = input.readLine().substring(1);
 		input.readLine();
 		input.readLine();
 		shardCount = input.readLine();
 		input.close();
+	    } else {
+		throw new LoginException();
 	    }
-	    JDABuilder builder = new JDABuilder(AccountType.BOT).setToken(/*Add token here*/);
+	    JDABuilder builder = new JDABuilder(AccountType.BOT).setToken(token);
 	    builder.setGame(Game.watching("Type +help")).setStatus(OnlineStatus.OFFLINE);
 	    int count = Integer.parseInt(shardCount);
 	    for (int i = 0; i < count; i += 1) {
@@ -186,7 +192,7 @@ public class Mainhub {
 	    }
 	} 
 	catch (NumberFormatException numEx) {
-		JDABuilder builder = new JDABuilder(AccountType.BOT).setToken(/*Add token here*/);
+		JDABuilder builder = new JDABuilder(AccountType.BOT).setToken(token);
 		builder.setGame(Game.watching("Type +help")).setStatus(OnlineStatus.OFFLINE);
 		api.add(builder.useSharding(0, 1).buildAsync());
 		while (api.get(0).getGuilds().size() > 1000) {
