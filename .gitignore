@@ -27,4 +27,10 @@ hs_err_pid*
 
 # configs 
 *.config
+
+# Database Files
+*.lck
+*.log
+*.properties
+*.script
 /bin/

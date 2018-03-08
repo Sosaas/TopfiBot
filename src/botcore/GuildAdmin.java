@@ -19,14 +19,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.sql.*;
 
-import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.TextChannel;
 
 public class GuildAdmin {
     
-    private String[] configurated;
     private ArrayList<GuildConfig> loaded;
 
     public GuildAdmin() {
@@ -35,7 +34,6 @@ public class GuildAdmin {
 	    File.separator + "guilds.config"));
 	    int i = 0;
 	    while (input.ready()) {
-		configurated[i] = input.readLine();
 		input.readLine();
 		i =+ 1;
 	    }
@@ -48,33 +46,24 @@ public class GuildAdmin {
     // TODO Speicherstrategie definieren
     public void setPrefix(Guild g) {
 	// TODO Methode zum Speichern des jeweiligen Prefixs 
-	if (configurated == null) {
-
-	}
-	for(String current : configurated) {
-	    if (current == g.getId()) {
-		
-	    }
-	}
     }
     public String getPrefix(Guild g) {
 	// TODO Methode um das jeweilige gespeicherte Prefix auszulesen
-	if (configurated == null) return "+";
-	for(String current : configurated) {
-	    if (current == g.getId()) {
-		
-	    }
-	}
 	return "+";
     }
-    public boolean isloaded(Guild g) {
+    public boolean isLoaded(Guild g) {
 	for (GuildConfig current : loaded) {
-	    if (current.getId() == g.getId()) return true;
+	    if (current.getId() == g.getId()) {
+		return true;
+	    }
 	}
 	return false;
     }
+    public GuildConfig getIfLoaded(Guild g) {
+	
+    }
     public int load(Guild g) {
-	if (isloaded(g)) return -1;
+	if (isLoaded(g)) return -1;
 	try {
 	    BufferedReader input = new BufferedReader(new FileReader("." + File.separator + "guilds.config"));
 	    String readed;
@@ -107,8 +96,11 @@ public class GuildAdmin {
     public void writeStandardConfig(Guild g) {
 	
     }
-    public Languages getLanguage(Guild g) {
-	// TODO Methode zur Rückgabe der Guild-Sprache initalisieren
+    public Languages getLanguage(Guild g) throws ClassNotFoundException {
+	Class.forName("org.hsqldb.jdbcDriver");
+	if (isLoaded(g)) {
+	    
+	}
 	return Languages.GERMAN;
     }
     // TODO Methode zum Speichern der Guild-Sprache erstellen
