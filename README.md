@@ -11,13 +11,11 @@ It'll contain features like:
 - Some funny stuff
 ## Dependencies
 The bot uses the following external libraries:
-- JDA/JavaDiscordAPI
-    The api-wrapper the bot uses to communicate with the official Discord-API. 
-    https://github.com/DV8FromTheWorld/JDA
-    (Apache License 2.0)
-- Logback 
-    An SFL4J implementation for console logging
-    https://github.com/qos-ch/logback
-    (Eclipse Public License v1.0 / GNU Lesser General Public License version 2.1)
+- [JDA/JavaDiscordAPI](https://github.com/DV8FromTheWorld/JDA)
+    - The api-wrapper the bot uses to communicate with the official Discord-API. 
+    - [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)
+- [Logback](https://github.com/qos-ch/logback)
+    - An SFL4J implementation for console logging
+    - [Eclipse Public License v1.0](https://www.eclipse.org/legal/epl-v10.html)
 ## Contact
 If you are intrested in TopfiBot, you can contact us at https://discord.gg/ftAhyqD. We look forward meeting you there.
