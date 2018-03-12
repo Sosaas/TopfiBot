@@ -17,15 +17,28 @@ package botcore.languages;
 public enum Languages {
     GERMAN, ENGLISH;
 
-    public String getTextInLanguage(String name) throws IllegalArgumentException {
-    	switch (this.name()) {
-    	case "GERMAN": 
-    	    return GermanText.valueOf(name).getText();
-    	case "ENGLISH":
-    	    return EnglishText.valueOf(name).getText();
+    public String getTextInLanguage(String name) {
+    	try {
+    	    switch (this.name()) {
+    	    case "GERMAN": 
+    		return GermanText.valueOf(name).getText();
+    	    case "ENGLISH":
+    		return EnglishText.valueOf(name).getText();
+    	    default: 
+    		return EnglishText.valueOf(name).getText() + "\n *We are sorry for not displaying this message in the language requested. We'll do our best to fix it!*";
+    	    }
+    	} catch (IllegalArgumentException illArgEx) {
+    	    illArgEx.printStackTrace();
+    	    try {
+    		switch (this.name()) {
+        	    default: 
+            		return EnglishText.valueOf(name).getText() + "\n *We are sorry for not displaying this message in the language requested. We'll do our best to fix it!*";
+        	    }
+    	    } catch (IllegalArgumentException illArgEx2) {
+    		illArgEx2.printStackTrace();
+    		return "Something went really wrong in order to send you a feedback. We'll fix that as soon as possible.";
+    	    }
     	}
-	throw new IllegalArgumentException();
-    	
     }
     
 }

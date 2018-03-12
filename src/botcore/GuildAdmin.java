@@ -84,12 +84,18 @@ public class GuildAdmin {
     public void writeStandardConfig(Guild g) {
 	
     }
-    public Languages getLanguage(Guild g) throws ClassNotFoundException {
-	Class.forName("org.hsqldb.jdbcDriver");
-	if (isLoaded(g)) {
+    public Languages getLanguage(Guild g) {
+	try {
+	    Class.forName("org.hsqldb.jdbcDriver");
+	    if (isLoaded(g)) {
 	    
+	    }
+	    return Languages.GERMAN;
+	} 
+	catch (ClassNotFoundException classEx) {
+	    classEx.printStackTrace();
+	    return Languages.ENGLISH;
 	}
-	return Languages.GERMAN;
     }
     // TODO Methode zum Speichern der Guild-Sprache erstellen
 }

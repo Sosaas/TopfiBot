@@ -105,11 +105,7 @@ public class MainListener extends ListenerAdapter {
             event.getChannel().sendFile(new File("." + File.separator + "Medien" + File.separator + "thugtopfi.png")).queue();
             break;
         case "link":
-            try {
-        	event.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(event.getGuild()).getTextInLanguage("INFO_JOINLINK") + "\nhttps://discordapp.com/api/oauth2/authorize?client_id=398129656953307136&permissions=0&scope=bot").complete();
-            } catch (ClassNotFoundException classEx) {
-        	event.getChannel().sendMessage(Languages.ENGLISH.getTextInLanguage("INFO_JOINLINK"));
-            }
+            event.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(event.getGuild()).getTextInLanguage("INFO_JOINLINK") + "\nhttps://discordapp.com/api/oauth2/authorize?client_id=398129656953307136&permissions=0&scope=bot").complete();
             break;
         case "help": 
             exePool.execute(new HelpRunnable(event));
