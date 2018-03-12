@@ -14,6 +14,7 @@
  */
 package botcore;
 
+import botcore.languages.Languages;
 import net.dv8tion.jda.core.entities.Guild;
 
 public class GuildConfig {

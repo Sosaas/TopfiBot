@@ -12,24 +12,18 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package featureResource;
+package featureResource.adminCommand;
 
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+public class DenyRunnable implements Runnable {
 
-public class PruneRunnable implements Runnable {
-    
-    private MessageReceivedEvent messageEvent;
-
-    public PruneRunnable(MessageReceivedEvent forEvent) {
-	messageEvent = forEvent;
+    public DenyRunnable() {
+	// TODO Auto-generated constructor stub
     }
 
     @Override
     public void run() {
-	if (messageEvent.getMessage().getContentRaw().matches("")) {
-	    
-	}
-
+	// TODO Auto-generated method stub
+	
     }
 
 }

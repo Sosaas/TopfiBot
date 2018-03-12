@@ -19,6 +19,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import botcore.languages.Languages;
+
 import java.sql.*;
 
 import net.dv8tion.jda.core.entities.Guild;
@@ -60,30 +63,15 @@ public class GuildAdmin {
 	return false;
     }
     public GuildConfig getIfLoaded(Guild g) {
-	
-    }
-    public int load(Guild g) {
-	if (isLoaded(g)) return -1;
-	try {
-	    BufferedReader input = new BufferedReader(new FileReader("." + File.separator + "guilds.config"));
-	    String readed;
-	    while(input.ready()) {
-		readed = input.readLine();
-		if (readed == g.getId()) {
-		    String config = input.readLine();
-		    loaded.add(new GuildConfig(g.getId(), config.substring(0, 0), config.substring(2, config.length())));
-		    input.close();
-		    return loaded.indexOf(new GuildConfig(g.getId(), config.substring(0, 0), config.substring(2, config.length())));
-		} else {
-		    input.readLine();
-		}
+	for (int i = 0; i < loaded.size(); i += 1) {
+	    if (loaded.get(i).getId().equals(g.getId())) {
+		return loaded.get(i);
 	    }
-	    input.close();
-	    return -1;
-	} catch (IOException IOEx) {
-	    IOEx.printStackTrace();
-	    return -1;
 	}
+	return null;
+    }
+    public void load(Guild g) {
+	
     }
     public boolean isLogActive(Guild g) {
 	// TODO Methode, die zurückgibt ob geloggt werden soll

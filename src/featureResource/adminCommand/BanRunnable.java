@@ -12,7 +12,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package featureResource;
+package featureResource.adminCommand;
 
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;

@@ -12,7 +12,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package botcore;
+package botcore.languages;
 
 public enum EnglishText {
     INVALID_COMMAND("Unknown Command! Use " + "+" + "help to get an list of all commands."),

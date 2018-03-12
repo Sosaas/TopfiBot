@@ -12,12 +12,20 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package featureResource;
+package botcore.languages;
 
-public class AllowRunnable {
+public enum Languages {
+    GERMAN, ENGLISH;
 
-    public AllowRunnable() {
-	// TODO Auto-generated constructor stub
+    public String getTextInLanguage(String name) throws IllegalArgumentException {
+    	switch (this.name()) {
+    	case "GERMAN": 
+    	    return GermanText.valueOf(name).getText();
+    	case "ENGLISH":
+    	    return EnglishText.valueOf(name).getText();
+    	}
+	throw new IllegalArgumentException();
+    	
     }
-
+    
 }

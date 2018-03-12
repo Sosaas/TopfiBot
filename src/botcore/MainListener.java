@@ -26,9 +26,21 @@ import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+
+import botcore.languages.Languages;
+
 import java.util.ArrayList;
 
 import featureResource.*;
+import featureResource.adminCommand.BanRunnable;
+import featureResource.adminCommand.DemuteRunnable;
+import featureResource.adminCommand.MuteRunnable;
+import featureResource.adminCommand.PruneRunnable;
+import featureResource.adminCommand.UnbanRunnable;
+import featureResource.funCommand.CatRunnable;
+import featureResource.funCommand.Magic8BallRunnable;
+import featureResource.funCommand.RollRunnable;
+import featureResource.infoCommand.HelpRunnable;
 
 public class MainListener extends ListenerAdapter {
     
@@ -93,7 +105,11 @@ public class MainListener extends ListenerAdapter {
             event.getChannel().sendFile(new File("." + File.separator + "Medien" + File.separator + "thugtopfi.png")).queue();
             break;
         case "link":
-            event.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(event.getGuild()).getTextInLanguage("INFO_JOINLINK") + "\nhttps://discordapp.com/api/oauth2/authorize?client_id=398129656953307136&permissions=0&scope=bot").complete();
+            try {
+        	event.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(event.getGuild()).getTextInLanguage("INFO_JOINLINK") + "\nhttps://discordapp.com/api/oauth2/authorize?client_id=398129656953307136&permissions=0&scope=bot").complete();
+            } catch (ClassNotFoundException classEx) {
+        	event.getChannel().sendMessage(Languages.ENGLISH.getTextInLanguage("INFO_JOINLINK"));
+            }
             break;
         case "help": 
             exePool.execute(new HelpRunnable(event));

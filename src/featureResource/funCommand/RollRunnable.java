@@ -12,7 +12,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package featureResource;
+package featureResource.funCommand;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
