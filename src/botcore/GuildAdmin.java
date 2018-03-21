@@ -15,11 +15,13 @@
 package botcore;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
+import botcore.exceptions.DatabaseConnectionException;
 import botcore.languages.Languages;
 
 import java.sql.*;
@@ -30,21 +32,10 @@ import net.dv8tion.jda.core.entities.TextChannel;
 public class GuildAdmin {
     
     private ArrayList<GuildConfig> loaded;
+    private Connection databaseConn;
 
     public GuildAdmin() {
-	try {
-	    BufferedReader input = new BufferedReader(new FileReader("."+ 
-	    File.separator + "guilds.config"));
-	    int i = 0;
-	    while (input.ready()) {
-		input.readLine();
-		i =+ 1;
-	    }
-	    input.close();
-	} catch (IOException IOEx) {
-	    System.err.println("Guilds-Config konnte nicht geladen werden!");
-	    IOEx.printStackTrace();
-	}
+	
     }
     // TODO Speicherstrategie definieren
     public void setPrefix(Guild g) {
@@ -88,7 +79,8 @@ public class GuildAdmin {
 	try {
 	    Class.forName("org.hsqldb.jdbcDriver");
 	    if (isLoaded(g)) {
-	    
+		GuildConfig con = getIfLoaded(g);
+		return con.getLanguage();
 	    }
 	    return Languages.GERMAN;
 	} 
@@ -98,4 +90,29 @@ public class GuildAdmin {
 	}
     }
     // TODO Methode zum Speichern der Guild-Sprache erstellen
+    public void connect() throws DatabaseConnectionException {
+	try {
+	    Class.forName("org.hsqldb.jdbcDriver");
+	    String url;
+	    Path startPath = Paths.get("." + "start.config");
+	    BufferedReader input = Files.newBufferedReader(startPath);
+	    for (byte b = 0; b < 4; b += 1) {
+		input.readLine();
+	    }
+	    url = input.readLine();
+	    databaseConn = DriverManager.getConnection(url, "TBot", "");
+	    if (!databaseConn.isValid(5)) {
+		
+	    }
+	} 
+	catch (ClassNotFoundException classEx) {
+	    
+	} 
+	catch (IOException ioEx) {
+	    
+	}
+	catch (SQLException sqlEx) {
+	    
+	}
+    }
 }

@@ -50,6 +50,7 @@ public class Mainhub {
 	    	String startImmidialty = input.readLine();
 	    	String useGUI = input.readLine();
 	    	String shardCount = input.readLine();
+	    	String databaseURL = input.readLine();
 	    	String shutdownTime = input.readLine();
 	    	input.close();
 	    	if (useGUI == "TRUE") {
