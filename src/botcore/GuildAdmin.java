@@ -39,14 +39,16 @@ public class GuildAdmin {
 	try {
 	    connect();
 	    loaded = new ArrayList<GuildConfig>();
-	    saveConfig(new GuildConfig());
-	} catch (DatabaseConnectionException e) {
+	//    saveConfig(new GuildConfig());
+	} 
+	catch (DatabaseConnectionException e) {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
-	} catch (SQLException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
+	} 
+//	catch (SQLException e) {
+//	    // TODO Auto-generated catch block
+//	    e.printStackTrace();
+//	}
     }
     // TODO Speicherstrategie definieren
     public void setPrefix(Guild g) {
