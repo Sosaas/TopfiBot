@@ -29,7 +29,7 @@ public enum GermanText {
     MAGIC8BALL_FIRST_NO("Meine Antwort ist Nein."),
     MAGIC8BALL_SECOND_NO("Meine Quellen verneinen dies."),
     MAGIC8BALL_THIRD_NO("NEIN"),
-    MAGIC8BALl_FOURTH_NO("Auf keinen Fall!"),
+    MAGIC8BALL_FOURTH_NO("Auf keinen Fall!"),
     MAGIC8BALL_FIFTH_NO("Negativ."),
     MAGIC8BALL_FIRST_MIXED("Konzentriere dich und frag nochmal."),
     MAGIC8BALL_SECOND_MIXED("Darauf würde ich nicht wetten."),

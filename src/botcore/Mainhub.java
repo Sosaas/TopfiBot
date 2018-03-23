@@ -170,6 +170,9 @@ public class Mainhub {
 		}
 	    }
 	    gAdmin = new GuildAdmin();
+	    if (api.get(0).getStatus().equals(JDA.Status.CONNECTED)) {
+		System.out.println("connected");
+	    }
 	    for (JDA now : api) {
 		now.addEventListener(new MainListener(now.getShardInfo().getShardId()));
 		now.getPresence().setStatus(OnlineStatus.ONLINE);

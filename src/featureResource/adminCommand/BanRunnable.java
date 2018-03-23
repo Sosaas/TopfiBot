@@ -14,6 +14,7 @@
  */
 package featureResource.adminCommand;
 
+import java.sql.SQLException;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -53,37 +54,58 @@ public class BanRunnable implements Runnable {
 	if (!messageEvent.getGuild().getMembersByEffectiveName(memberToBanName, false).isEmpty()) {
 	    memberToBan = messageEvent.getGuild().getMembersByEffectiveName(memberToBanName, false).get(0);
 	} else {
-	    messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MEMBER_NOT_FOUND")).complete();
+	    try {
+		messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MEMBER_NOT_FOUND")).complete();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	    return;
 	}
 	if (!messageEvent.getMember().canInteract(memberToBan)) {
-	    messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MEMBER_NOT_FOUND")).complete();
+	    try {
+		messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MEMBER_NOT_FOUND")).complete();
+	    } catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	    }
 	    return;
 	}
 	if (!messageEvent.getMember().hasPermission(Permission.BAN_MEMBERS) || !messageEvent.getMember().hasPermission(Permission.ADMINISTRATOR) || !messageEvent.getMember().isOwner()) {
-	    messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MISSING_PERMISSIONS")).complete();
+	    try {
+		messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MISSING_PERMISSIONS")).complete();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	    return;
 	}
 	if (!messageEvent.getGuild().getSelfMember().hasPermission(Permission.BAN_MEMBERS) && !messageEvent.getGuild().getSelfMember().hasPermission(Permission.ADMINISTRATOR)) {
-	    messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("BOT_LACK_OF_PERMISSION")).complete();
+	    try {
+		messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("BOT_LACK_OF_PERMISSION")).complete();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	    return;
 	}
 	if (memberToBan.getJoinDate().plusDays((long) delDays).isAfter(OffsetDateTime.now())) {
 	    delDays = (int) memberToBan.getJoinDate().until(OffsetDateTime.now(), ChronoUnit.DAYS);
 	}
 	messageEvent.getGuild().getController().ban(memberToBan, delDays, reason).complete();
-	if (Mainhub.gAdmin.isLogActive(messageEvent.getGuild())) {
-	    String zusatz = "";
-	    if (delDays != 0) {
+	try {
+	    if (Mainhub.gAdmin.isLogActive(messageEvent.getGuild())) {
+		String zusatz = "";
+		if (delDays != 0) {
 		zusatz = Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("BAN_ADDITION1") + String.valueOf(delDays) + Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("BAN_ADDITION2");
+		}
+		Mainhub.gAdmin.getLogChannel(messageEvent.getGuild()).sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("LOG_ACTION") + 
+		Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("BAN") + zusatz +
+		Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("LOG_TARGET") + memberToBanName +
+		Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("LOG_RESPONSIBLE") + messageEvent.getMember().getAsMention() +
+		Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("LOG_REASON") + reason).complete();
 	    }
-	    Mainhub.gAdmin.getLogChannel(messageEvent.getGuild()).sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("LOG_ACTION") + 
-		    Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("BAN") + zusatz +
-		    Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("LOG_TARGET") + memberToBanName +
-		    Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("LOG_RESPONSIBLE") + messageEvent.getMember().getAsMention() +
-		    Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("LOG_REASON") + reason).complete();
-	}
 	messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MEMBER_BANNED")).complete();
+	} 	    
+	catch (SQLException sqlEx) {
+	    sqlEx.printStackTrace();
+	}
     }
-
 }

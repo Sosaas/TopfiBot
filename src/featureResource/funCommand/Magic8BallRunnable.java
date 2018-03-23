@@ -14,6 +14,8 @@
  */
 package featureResource.funCommand;
 
+import java.sql.SQLException;
+
 import botcore.Mainhub;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
@@ -27,91 +29,174 @@ public class Magic8BallRunnable implements Runnable {
 
     @Override
     public void run() {
-	
 	Double rnd = Math.random();
 	String content = messageEvent.getMessage().getContentRaw();
 	if (!content.matches("^\\+magic8ball \\S{2}.{0,}$")) {
-	    messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_NO_QUESTION")).complete();
+	    try {
+		messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_NO_QUESTION")).complete();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	    return;
 	}
 	if (rnd < 0.05) {
-	    messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_FIRST_NO")).complete();
+	    try {
+		messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_FIRST_NO")).complete();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	    return;
 	}
 	if (rnd < 0.1) {
-	    messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_SECOND_NO")).complete();
+	    try {
+		messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_SECOND_NO")).complete();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	    return;
 	}
 	if (rnd < 0.15) {
-	    messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_THIRD_NO")).complete();
+	    try {
+		messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_THIRD_NO")).complete();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	    return;
 	}
 	if (rnd < 0.2) {
-	    messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_FOURTH_NO")).complete();
+	    try {
+		messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_FOURTH_NO")).complete();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	    return;
 	}
 	if (rnd < 0.25) {
-	    messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_FIFTH_NO")).complete();
+	    try {
+		messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_FIFTH_NO")).complete();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	    return;
 	}
 	if (rnd < 0.3) {
-	    messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_FIRST_MIXED")).complete();
+	    try {
+		messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_FIRST_MIXED")).complete();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	    return;
 	}
 	if (rnd < 0.35) {
-	    messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_SECOND_MIXED")).complete();
+	    try {
+		messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_SECOND_MIXED")).complete();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	    return;
 	}
 	if (rnd < 0.4) {
-	    messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_THIRD_MIXED")).complete();
+	    try {
+		messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_THIRD_MIXED")).complete();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	    return;
 	}
 	if (rnd < 0.45) {
-	    messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_FOURTH_MIXED")).complete();
+	    try {
+		messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_FOURTH_MIXED")).complete();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	    return;
 	}
 	if (rnd < 0.5) {
-	    messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_FIFTH_MIXED")).complete();
+	    try {
+		messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_FIFTH_MIXED")).complete();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	    return;
 	}
 	if (rnd < 0.55) {
-	    messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_FIRST_YES")).complete();
+	    try {
+		messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_FIRST_YES")).complete();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	    return;
 	}
 	if (rnd < 0.6) {
-	    messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_SECOND_YES")).complete();
+	    try {
+		messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_SECOND_YES")).complete();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	    return;
 	}
 	if (rnd < 0.65) {
-	    messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_THIRD_YES")).complete();
+	    try {
+		messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_THIRD_YES")).complete();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	    return;
 	}
 	if (rnd < 0.7) {
-	    messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_FOURTH_YES")).complete();
+	    try {
+		messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_FOURTH_YES")).complete();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	    return;
 	}
 	if (rnd < 0.75) {
-	    messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_FIFTH_YES")).complete();
+	    try {
+		messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_FIFTH_YES")).complete();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	    return;
 	}
 	if (rnd < 0.8) {
-	    messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_SIXTH_YES")).complete();
+	    try {
+		messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_SIXTH_YES")).complete();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	    return;
 	}
 	if (rnd < 0.85) {
-	    messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_SEVENTH_YES")).complete();
+	    try {
+		messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_SEVENTH_YES")).complete();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	    return;
 	}
 	if (rnd < 0.9) {
-	    messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_EIGHTLY_YES")).complete();
+	    try {
+		messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_EIGHTLY_YES")).complete();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	    return;
 	}
 	if (rnd < 0.95) {
-	    messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_NINTH_YES")).complete();
+	    try {
+		messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_NINTH_YES")).complete();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	    return;
 	}
 	if (rnd < 1.0) {
-	    messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_TENTH_YES")).complete();
+	    try {
+		messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MAGIC8BALL_TENTH_YES")).complete();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	    return;
 	}
 

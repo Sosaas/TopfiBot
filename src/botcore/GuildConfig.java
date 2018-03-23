@@ -67,6 +67,9 @@ public class GuildConfig {
 	if (g.isMember(g.getJDA().getSelfUser())) {
 	    gId = g.getId();
 	}
+	prefix = "+";
+	gConfig = "0";
+	gLang = Languages.ENGLISH;
 	return this;
     }
 

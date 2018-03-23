@@ -14,6 +14,7 @@
  */
 package featureResource.adminCommand;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -42,15 +43,30 @@ public class UnbanRunnable implements Runnable {
     @Override
     public void run() {
 	if (!messageEvent.getMessage().getContentRaw().matches("^.unban \\S.{1,31}$")) {
-	    messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("INVALID_PARAM")).complete();
+	    try {
+		messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("INVALID_PARAM")).complete();
+	    } catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	    }
 	    return;
 	}
 	if (!messageEvent.getMember().hasPermission(Permission.BAN_MEMBERS)) {
-	    messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MISSING_PERMISSIONS")).complete();
+	    try {
+		messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("MISSING_PERMISSIONS")).complete();
+	    } catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	    }
 	    return;
 	}
 	if (!messageEvent.getGuild().getSelfMember().hasPermission(Permission.BAN_MEMBERS)) {
-	    messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("BOT_LACK_OF_PERMISSION")).complete();
+	    try {
+		messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("BOT_LACK_OF_PERMISSION")).complete();
+	    } catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	    }
 	    return;
 	}
 	String userToUnbanName;

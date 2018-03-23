@@ -23,6 +23,7 @@ import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -51,6 +52,7 @@ public class MainListener extends ListenerAdapter {
 
     public MainListener(int id) {
 	shardID = id;
+	launched = true;
     }
     public static MainListener getResponsibleListener(JDA jda) {
 	for (Object list : jda.getRegisteredListeners()) {
@@ -105,7 +107,11 @@ public class MainListener extends ListenerAdapter {
             event.getChannel().sendFile(new File("." + File.separator + "Medien" + File.separator + "thugtopfi.png")).queue();
             break;
         case "link":
-            event.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(event.getGuild()).getTextInLanguage("INFO_JOINLINK") + "\nhttps://discordapp.com/api/oauth2/authorize?client_id=398129656953307136&permissions=0&scope=bot").complete();
+            try {
+		event.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(event.getGuild()).getTextInLanguage("INFO_JOINLINK") + "\nhttps://discordapp.com/api/oauth2/authorize?client_id=398129656953307136&permissions=0&scope=bot").complete();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
             break;
         case "help": 
             exePool.execute(new HelpRunnable(event));
@@ -140,7 +146,11 @@ public class MainListener extends ListenerAdapter {
         case "warn":
             break;
         default: 
-            event.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(event.getGuild()).getTextInLanguage("INVALID_COMMAND")).queue();
+            try {
+		event.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(event.getGuild()).getTextInLanguage("INVALID_COMMAND")).queue();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
         }
     }
     @Override

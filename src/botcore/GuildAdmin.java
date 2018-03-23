@@ -28,6 +28,7 @@ import java.sql.*;
 
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.entities.impl.GuildImpl;
 
 public class GuildAdmin {
     
@@ -35,11 +36,21 @@ public class GuildAdmin {
     private Connection databaseConn;
 
     public GuildAdmin() {
-	
+	try {
+	    connect();
+	    loaded = new ArrayList<GuildConfig>();
+	    saveConfig(new GuildConfig());
+	} catch (DatabaseConnectionException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	} catch (SQLException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
     }
     // TODO Speicherstrategie definieren
     public void setPrefix(Guild g) {
-	// TODO Methode zum Speichern des jeweiligen Prefixs 
+	
     }
     public String getPrefix(Guild g) {
 	// TODO Methode um das jeweilige gespeicherte Prefix auszulesen
@@ -61,8 +72,12 @@ public class GuildAdmin {
 	}
 	return null;
     }
-    public void load(Guild g) {
+    public void load(Guild g) throws SQLException {
+	Statement stmt = databaseConn.createStatement();
 	
+    }
+    public void loadAndGet(Guild g) throws SQLException {
+	Statement stmt = databaseConn.createStatement();
     }
     public boolean isLogActive(Guild g) {
 	// TODO Methode, die zurückgibt ob geloggt werden soll
@@ -72,29 +87,26 @@ public class GuildAdmin {
 	// TODO Methode die den Channel zum loggen zurückgibt initalisieren
 	return g.getTextChannelCache().asList().get(0);
     }
-    public void writeStandardConfig(Guild g) {
-	
+    public Languages getLanguage(Guild g) throws SQLException {
+	if (isLoaded(g)) {
+	    GuildConfig con = getIfLoaded(g);
+	    return con.getLanguage();
+	}     
+	return Languages.GERMAN;
     }
-    public Languages getLanguage(Guild g) {
-	try {
-	    Class.forName("org.hsqldb.jdbcDriver");
-	    if (isLoaded(g)) {
-		GuildConfig con = getIfLoaded(g);
-		return con.getLanguage();
-	    }
-	    return Languages.GERMAN;
-	} 
-	catch (ClassNotFoundException classEx) {
-	    classEx.printStackTrace();
-	    return Languages.ENGLISH;
+    /* 	public void saveConfig(GuildConfig con) throws SQLException {
+	ResultSet rs = databaseConn.createStatement().executeQuery("SELECT ID FROM General WHERE EXISTS (SELECT ID FROM General WHERE ID = '"+ con.getId() + "')");
+	if (rs.first()) {
+	    System.out.println(rs.getString(1));
+	} else {
+	    System.out.println("Keine Reihe");
 	}
-    }
-    // TODO Methode zum Speichern der Guild-Sprache erstellen
+    }*/
     public void connect() throws DatabaseConnectionException {
 	try {
 	    Class.forName("org.hsqldb.jdbcDriver");
 	    String url;
-	    Path startPath = Paths.get("." + "start.config");
+	    Path startPath = Paths.get(".", "start.config");
 	    BufferedReader input = Files.newBufferedReader(startPath);
 	    for (byte b = 0; b < 4; b += 1) {
 		input.readLine();
@@ -102,17 +114,23 @@ public class GuildAdmin {
 	    url = input.readLine();
 	    databaseConn = DriverManager.getConnection(url, "TBot", "");
 	    if (!databaseConn.isValid(5)) {
-		
+		throw new DatabaseConnectionException();
 	    }
 	} 
 	catch (ClassNotFoundException classEx) {
-	    
+	    DatabaseConnectionException dce = new DatabaseConnectionException();
+	    dce.initCause(classEx);
+	    throw dce;
 	} 
 	catch (IOException ioEx) {
-	    
+	    DatabaseConnectionException dce = new DatabaseConnectionException();
+	    dce.initCause(ioEx);
+	    throw dce;
 	}
 	catch (SQLException sqlEx) {
-	    
+	    DatabaseConnectionException dce = new DatabaseConnectionException();
+	    dce.initCause(sqlEx);
+	    throw dce;
 	}
     }
 }

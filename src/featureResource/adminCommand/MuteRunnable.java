@@ -14,6 +14,7 @@
  */
 package featureResource.adminCommand;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
@@ -179,7 +180,11 @@ public class MuteRunnable implements Runnable {
 		ex.printStackTrace();
 	    }
 	} else {
-	    messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("INVALID_PARAM")).complete();
+	    try {
+		messageEvent.getChannel().sendMessage(Mainhub.gAdmin.getLanguage(messageEvent.getGuild()).getTextInLanguage("INVALID_PARAM")).complete();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	}
     }
     private void logMute(Member muted, String[] reason, Channel channel, boolean allVoice) {
