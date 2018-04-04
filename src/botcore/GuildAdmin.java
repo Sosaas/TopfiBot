@@ -34,29 +34,32 @@ public class GuildAdmin {
     
     private ArrayList<GuildConfig> loaded;
     private Connection databaseConn;
+    private PreparedStatement selectStatById;
+    private PreparedStatement updateCon;
+    private PreparedStatement insertCon;
 
     public GuildAdmin() {
 	try {
 	    connect();
 	    loaded = new ArrayList<GuildConfig>();
-	//    saveConfig(new GuildConfig());
 	} 
 	catch (DatabaseConnectionException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	} 
-//	catch (SQLException e) {
-//	    // TODO Auto-generated catch block
-//	    e.printStackTrace();
-//	}
     }
-    // TODO Speicherstrategie definieren
     public void setPrefix(Guild g) {
 	
     }
     public String getPrefix(Guild g) {
-	// TODO Methode um das jeweilige gespeicherte Prefix auszulesen
-	return "+";
+	GuildConfig con = getIfLoaded(g);
+	if (con == null) {
+	    try {
+		con = loadAndGet(g);
+	    } catch (SQLException e) {
+		return "+";
+	    }
+	}
+	return con.getPrefix();
     }
     public boolean isLoaded(Guild g) {
 	for (GuildConfig current : loaded) {
@@ -75,14 +78,34 @@ public class GuildAdmin {
 	return null;
     }
     public void load(Guild g) throws SQLException {
-	Statement stmt = databaseConn.createStatement();
-	
+	selectStatById.setString(1, g.getId());
+	ResultSet rs = selectStatById.executeQuery();
+	GuildConfig con = new GuildConfig().adjust(g);
+	try {
+	    con.setLanguage(Languages.getLangByShort(rs.getString(1)));
+	    con.setPrefix(rs.getString(2));
+	    con.setConfig(rs.getString(3));
+	    loaded.add(con);
+	} catch (SQLException noLineEx) {
+	    loaded.add(con);
+	}
     }
-    public void loadAndGet(Guild g) throws SQLException {
-	Statement stmt = databaseConn.createStatement();
+    public GuildConfig loadAndGet(Guild g) throws SQLException {
+	selectStatById.setString(1, g.getId());
+	ResultSet rs = selectStatById.executeQuery();
+	GuildConfig con = new GuildConfig().adjust(g);
+	try {
+	    con.setLanguage(Languages.getLangByShort(rs.getString(1)));
+	    con.setPrefix(rs.getString(2));
+	    con.setConfig(rs.getString(3));
+	    loaded.add(con);
+	    return con;
+	} catch (SQLException noLineEx) {
+	    loaded.add(con);
+	    return con;
+	}
     }
     public boolean isLogActive(Guild g) {
-	// TODO Methode, die zurückgibt ob geloggt werden soll
 	return true;
     }
     public TextChannel getLogChannel(Guild g) {
@@ -90,20 +113,43 @@ public class GuildAdmin {
 	return g.getTextChannelCache().asList().get(0);
     }
     public Languages getLanguage(Guild g) throws SQLException {
-	if (isLoaded(g)) {
-	    GuildConfig con = getIfLoaded(g);
-	    return con.getLanguage();
-	}     
-	return Languages.GERMAN;
-    }
-    /* 	public void saveConfig(GuildConfig con) throws SQLException {
-	ResultSet rs = databaseConn.createStatement().executeQuery("SELECT ID FROM General WHERE EXISTS (SELECT ID FROM General WHERE ID = '"+ con.getId() + "')");
-	if (rs.first()) {
-	    System.out.println(rs.getString(1));
-	} else {
-	    System.out.println("Keine Reihe");
+	GuildConfig con = getIfLoaded(g);
+	if (con == null) {
+	    try {
+		con = loadAndGet(g);
+	    } catch (SQLException e) {
+		return Languages.ENGLISH;
+	    }
 	}
-    }*/
+	return con.getLanguage();   
+    }
+    public void saveConfig(GuildConfig con) throws SQLException {
+	selectStatById.setString(1, con.getId());
+	ResultSet rs = selectStatById.executeQuery();
+	boolean exists;
+	try {
+	    rs.getString(1);
+	    exists = true;
+	    System.out.println("try success");
+	} catch (SQLException noLineEx) {
+	    exists = false;
+	    System.out.println("catch success");
+	} finally {
+	    rs.close();
+	}
+	if (exists) {
+	    updateCon.setString(1, con.getLanguage().getNameShort());
+	    updateCon.setString(2, con.getPrefix());
+	    updateCon.setString(3, con.getConfig());
+	    updateCon.executeUpdate();
+	} else {
+	    insertCon.setString(1, con.getId());
+	    insertCon.setString(2, con.getLanguage().getNameShort());
+	    insertCon.setString(3, con.getPrefix());
+	    insertCon.setString(4, con.getConfig());
+	    insertCon.executeUpdate();
+	}
+    }
     public void connect() throws DatabaseConnectionException {
 	try {
 	    Class.forName("org.hsqldb.jdbcDriver");
@@ -118,6 +164,9 @@ public class GuildAdmin {
 	    if (!databaseConn.isValid(5)) {
 		throw new DatabaseConnectionException();
 	    }
+	    selectStatById = databaseConn.prepareStatement("SELECT Id FROM General WHERE EXISTS (SELECT ID FROM General WHERE ID = ?)");
+	    updateCon = databaseConn.prepareStatement("UPDATE General SET Language = ?, Prefix = ?, Prop = ? WHERE ID = ?");
+	    insertCon = databaseConn.prepareStatement("INSERT INTO General VALUES (?, ?, ?, ?)");
 	} 
 	catch (ClassNotFoundException classEx) {
 	    DatabaseConnectionException dce = new DatabaseConnectionException();
@@ -133,6 +182,16 @@ public class GuildAdmin {
 	    DatabaseConnectionException dce = new DatabaseConnectionException();
 	    dce.initCause(sqlEx);
 	    throw dce;
+	}
+    }
+    public void shutdown() {
+	try {
+	    for (GuildConfig con : loaded) {
+		saveConfig(con);
+	    }
+	    databaseConn.close();
+	} catch (SQLException e) {
+	    e.printStackTrace();
 	}
     }
 }

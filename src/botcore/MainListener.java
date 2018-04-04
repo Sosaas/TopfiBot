@@ -28,30 +28,19 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import botcore.languages.Languages;
-
 import java.util.ArrayList;
 
-import featureResource.*;
-import featureResource.adminCommand.BanRunnable;
-import featureResource.adminCommand.DemuteRunnable;
-import featureResource.adminCommand.MuteRunnable;
-import featureResource.adminCommand.PruneRunnable;
-import featureResource.adminCommand.UnbanRunnable;
-import featureResource.funCommand.CatRunnable;
-import featureResource.funCommand.Magic8BallRunnable;
-import featureResource.funCommand.RollRunnable;
-import featureResource.infoCommand.HelpRunnable;
+import featureResource.adminCommand.*;
+import featureResource.funCommand.*;
+import featureResource.infoCommand.*;
 
 public class MainListener extends ListenerAdapter {
     
     private boolean launched;
-    private final int shardID;
     private ExecutorService exePool = Executors.newCachedThreadPool();
     private ArrayList<ChoiceMessageIdentifier> identifierList = new ArrayList<ChoiceMessageIdentifier>();
 
-    public MainListener(int id) {
-	shardID = id;
+    public MainListener() {
 	launched = true;
     }
     public static MainListener getResponsibleListener(JDA jda) {
@@ -70,7 +59,6 @@ public class MainListener extends ListenerAdapter {
     }
     public synchronized void shutdown() {
 	exePool.shutdown();
-	Mainhub.getAPI().get(shardID).getPresence().setStatus(OnlineStatus.OFFLINE);
 	try {
 	    exePool.awaitTermination(30, TimeUnit.SECONDS);
 	} 
@@ -78,8 +66,7 @@ public class MainListener extends ListenerAdapter {
 	    exePool.shutdownNow();
 	}
     }
-    @Override
-    public void onMessageReceived(MessageReceivedEvent event)
+    @Override    public void onMessageReceived(MessageReceivedEvent event)
     {	
 	if (!launched) {
 	    return;
@@ -96,7 +83,7 @@ public class MainListener extends ListenerAdapter {
         switch (command) {
         case "ping" : 
             MessageChannel channel = event.getChannel();
-            channel.sendMessage("pong!  " + String.valueOf(Mainhub.getAPI().get(shardID).getPing()) + "ms").queue();
+            channel.sendMessage("pong!  " + String.valueOf(Mainhub.getAPI().getPing()) + "ms").queue();
             break;
         case "vorstellen" : 
             MessageChannel channel1 = event.getChannel();

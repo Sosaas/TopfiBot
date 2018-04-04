@@ -50,9 +50,7 @@ public class TopfiBotControlPanel extends JFrame {
 		public void mouseClicked(MouseEvent arg0) {
 		    try {
 			if (panelStat.getOnline() != 0) {
-			    for (JDA now : Mainhub.getAPI()) {
-				now.shutdown();
-			    }
+			    Mainhub.getAPI().shutdown();
 			    panelStat.setOnline((short) 0);
 			} else {
 			    panelStat.setOnline((short) 1);

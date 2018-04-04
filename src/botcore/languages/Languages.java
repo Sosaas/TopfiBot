@@ -17,6 +17,17 @@ package botcore.languages;
 public enum Languages {
     GERMAN, ENGLISH;
 
+    public static Languages getLangByShort(String shortName) {
+	switch (shortName) {
+	case "GER" : 
+	    return GERMAN;
+	case "ENG" :
+	    return ENGLISH;
+	default : 
+	    return ENGLISH;
+	}
+    }
+    
     public String getTextInLanguage(String name) {
     	try {
     	    switch (this.name()) {
@@ -40,5 +51,14 @@ public enum Languages {
     	    }
     	}
     }
-    
+    public String getNameShort() {
+	switch (this) {
+	case GERMAN : 
+	    return "GER";
+	case ENGLISH :
+	    return "ENG";
+	default : 
+	    return "ERR";
+	}
+    }
 }
