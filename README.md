@@ -1,6 +1,6 @@
 # TopfiBot
 TopfiBot is an open-source multifunctional bot for Discord (discordapp.com). The process of development hasn't come too far yet, 
-but all committed in the master branch should be stable to use (please notice that features are quite limited right now).
+so e adviced about possible bugs. A stable version will be realeased when beta phase is reached. (please notice that features are quite limited right now).
 ## Concept
 TopfiBot is made to provide a wide range of features in an easy way. 
 It'll contain features like:
